@@ -5,6 +5,7 @@
         <version>1.0.0-SNAPSHOT</version>
         <packaging>pom</packaging>
         <properties>
+                <java.version>17</java.version>
                 <project.build.sourceEncoding>
                 UTF-8</project.build.sourceEncoding>
         </properties>
@@ -12,6 +13,18 @@
                 <module>tutorialapi-rest</module>
                 <module>tutorialapi-server</module>
         </modules>
+        <dependencyManagement>
+                <dependencies>
+                        <dependency>
+                                <groupId>
+                                org.eclipse.jetty</groupId>
+                                <artifactId>jetty-bom</artifactId>
+                                <version>11.0.7</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                        </dependency>
+                </dependencies>
+        </dependencyManagement>
         <build>
                 <pluginManagement>
                         <plugins>
@@ -29,6 +42,10 @@
                                         maven-compiler-plugin</artifactId>
                                         <version>3.8.1</version>
                                         <configuration>
+                                                <source>
+                                                ${java.version}</source>
+                                                <target>
+                                                ${java.version}</target>
                                                 <compilerArgs>
                                                         <arg>
                                                         -Werror</arg>
@@ -42,6 +59,31 @@
                                                 <failOnError>
                                                 true</failOnError>
                                         </configuration>
+                                </plugin>
+                                <plugin>
+                                        <groupId>
+                                        org.apache.maven.plugins</groupId>
+                                        <artifactId>
+                                        maven-dependency-plugin</artifactId>
+                                        <version>3.2.0</version>
+                                        <configuration>
+                                                <failOnWarning>
+                                                true</failOnWarning>
+                                                <verbose>
+                                                true</verbose>
+                                        </configuration>
+                                        <executions>
+                                                <execution>
+                                                        <id>
+                                                        analyze-only</id>
+                                                        <goals>
+                                                                <goal>
+                                                                analyze-only</goal>
+                                                        </goals>
+                                                        <phase>
+                                                        verify</phase>
+                                                </execution>
+                                        </executions>
                                 </plugin>
                                 <plugin>
                                         <groupId>
@@ -106,6 +148,12 @@
                                 org.apache.maven.plugins</groupId>
                                 <artifactId>
                                 maven-compiler-plugin</artifactId>
+                        </plugin>
+                        <plugin>
+                                <groupId>
+                                org.apache.maven.plugins</groupId>
+                                <artifactId>
+                                maven-dependency-plugin</artifactId>
                         </plugin>
                         <plugin>
                                 <groupId>
