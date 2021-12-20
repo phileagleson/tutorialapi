@@ -59,16 +59,14 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>
-                    maven-dependency-plugin</artifactId>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId> maven-dependency-plugin</artifactId>
                     <version>3.2.0</version>
                     <configuration>
                         <failOnWarning>true</failOnWarning>
                         <verbose>true</verbose>
                         <ignoredUnusedDeclaredDependencies>
-                            <ignoredUnusedDeclaredDependency>
-                            ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
+                            <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
                         </ignoredUnusedDeclaredDependencies>
                     </configuration>
                     <executions>

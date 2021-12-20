@@ -19,8 +19,8 @@ cat <<EOF >tutorialapi.ext
 subjectAltName = @alt_names
 [alt_names]
 DNS.1 = localhost
-DNS.1 = tutorialapi.com
-DNS.1 = www.tutorialapi.com
+DNS.2 = tutorialapi.com
+DNS.3 = www.tutorialapi.com
 EOF
 
 openssl x509 -req -in tutorialapi.csr -CA ca.crt -CAkey ca.priv \
