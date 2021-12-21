@@ -8,20 +8,25 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TutorialApiServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(TutorialApiServer.class);
     public static void main(String... args) throws Exception {
-        LOGGER.info("Hello World");
 
         HttpConfiguration httpsConfiguration = new HttpConfiguration();
         httpsConfiguration.setSecureScheme(HTTPS.asString());
 	httpsConfiguration.setSecurePort(8443);
 	httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
 	httpsConfiguration.setSendServerVersion(false);
+        httpsConfiguration.setSendDateHeader(false);
 
 	HttpConnectionFactory httpsConnectionFactory = new HttpConnectionFactory(httpsConfiguration);
 
@@ -42,6 +47,18 @@ public class TutorialApiServer {
 
 	server.addConnector(httpsConnector);
 
+        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        servletContextHandler.setContextPath("/");
+        servletContextHandler.setBaseResource(Resource.newResource("tutorialapi-server/src/main/resources/www"));
+        servletContextHandler.addServlet(DefaultServlet.class, "/");
+
+        server.setHandler(servletContextHandler);
+
+        ServletHolder apiServletHolder = servletContextHandler.addServlet(ServletContainer.class, "/api/*");
+        apiServletHolder.setInitParameter("jakarta.ws.rs.Application", "TODO");
+                
+
+        LOGGER.info("Server starting...");
 	server.start();
 	server.join();
 

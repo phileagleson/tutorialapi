@@ -1,28 +1,64 @@
 <project>
-        <modelVersion>4.0.0</modelVersion>
-        <parent>
-                <groupId>com.tutorialapi</groupId>
-                <artifactId>tutorialapi</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-        </parent>
-        <artifactId>tutorialapi-server</artifactId>
-        <dependencies>
-                <dependency>
-                        <groupId>ch.qos.logback</groupId>
-                        <artifactId>logback-classic</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-server</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-http</artifactId>
-                </dependency>
-                <!-- used for logging -->
-                <dependency>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                </dependency>
-        </dependencies>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.tutorialapi</groupId>
+        <artifactId>tutorialapi</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>tutorialapi-server</artifactId>
+    <dependencies>
+        <!-- Logging Imlementation -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <!-- fixing dependency convergence -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+        <!-- Used for application server -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+            <exclusions>
+                <!-- fixing self-convergence issue -->
+                <exclusion>
+                    <groupId>jakarta.annotation</groupId>
+                    <artifactId>jakarta.annotation-api</artifactId>
+                </exclusion>
+                <!-- Using newer version from jersey-container-servlet-core -->
+                <exclusion>
+                    <groupId>jakarta.inject</groupId>
+                    <artifactId>jakarta.inject-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+        </dependency>
+        <!-- Used for Rest api -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+        </dependency>
+        <!-- used for logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>
