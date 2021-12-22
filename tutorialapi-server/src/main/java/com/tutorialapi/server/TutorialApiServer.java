@@ -1,6 +1,8 @@
 package com.tutorialapi.server;
 import static org.eclipse.jetty.http.HttpScheme.HTTPS;
 
+import com.tutorialapi.rest.ApiApplication;
+
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -31,7 +33,7 @@ public class TutorialApiServer {
 	HttpConnectionFactory httpsConnectionFactory = new HttpConnectionFactory(httpsConfiguration);
 
 	SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-	sslContextFactory.setKeyStorePath("tutorialapi-server/src/main/resources/certs/tutorialapi.p12");
+	sslContextFactory.setKeyStorePath("/Users/phil/Source/tutorialapi/tutorialapi-server/src/main/resources/certs/tutorialapi.p12");
 	sslContextFactory.setKeyStoreType("PKCS12");
 	sslContextFactory.setKeyStorePassword("changeit");
 	sslContextFactory.setKeyManagerPassword("changeit");
@@ -49,13 +51,13 @@ public class TutorialApiServer {
 
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletContextHandler.setContextPath("/");
-        servletContextHandler.setBaseResource(Resource.newResource("tutorialapi-server/src/main/resources/www"));
+        servletContextHandler.setBaseResource(Resource.newResource("/Users/phil/Source/tutorialapi/tutorialapi-server/src/main/resources/www"));
         servletContextHandler.addServlet(DefaultServlet.class, "/");
 
         server.setHandler(servletContextHandler);
 
         ServletHolder apiServletHolder = servletContextHandler.addServlet(ServletContainer.class, "/api/*");
-        apiServletHolder.setInitParameter("jakarta.ws.rs.Application", "TODO");
+        apiServletHolder.setInitParameter("jakarta.ws.rs.Application", ApiApplication.class.getName());
                 
 
         LOGGER.info("Server starting...");

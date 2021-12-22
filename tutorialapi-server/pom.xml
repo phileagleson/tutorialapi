@@ -7,6 +7,11 @@
     </parent>
     <artifactId>tutorialapi-server</artifactId>
     <dependencies>
+        <!-- Project dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>tutorialapi-rest</artifactId>
+        </dependency>
         <!-- Logging Imlementation -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
