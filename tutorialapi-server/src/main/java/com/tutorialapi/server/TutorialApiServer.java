@@ -1,6 +1,8 @@
 package com.tutorialapi.server;
 import static org.eclipse.jetty.http.HttpScheme.HTTPS;
 
+import java.util.Optional;
+
 import com.tutorialapi.rest.ApiApplication;
 
 import org.eclipse.jetty.http.HttpVersion;
@@ -22,10 +24,11 @@ import org.slf4j.LoggerFactory;
 public class TutorialApiServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(TutorialApiServer.class);
     public static void main(String... args) throws Exception {
+        int port = Optional.ofNullable(System.getProperty("port")).map(Integer::parseInt).orElse(8443);
 
         HttpConfiguration httpsConfiguration = new HttpConfiguration();
         httpsConfiguration.setSecureScheme(HTTPS.asString());
-	httpsConfiguration.setSecurePort(8443);
+	httpsConfiguration.setSecurePort(port);
 	httpsConfiguration.addCustomizer(new SecureRequestCustomizer());
 	httpsConfiguration.setSendServerVersion(false);
         httpsConfiguration.setSendDateHeader(false);
@@ -60,7 +63,7 @@ public class TutorialApiServer {
         apiServletHolder.setInitParameter("jakarta.ws.rs.Application", ApiApplication.class.getName());
                 
 
-        LOGGER.info("Server starting...");
+        LOGGER.info("Server starting on port: {}", port);
 	server.start();
 	server.join();
 
