@@ -1,9 +1,13 @@
 package com.tutorialapi.server;
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 import static org.eclipse.jetty.http.HttpScheme.HTTPS;
 
-import java.util.Optional;
+import java.net.URL;
 
 import com.tutorialapi.rest.ApiApplication;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -24,7 +28,14 @@ import org.slf4j.LoggerFactory;
 public class TutorialApiServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(TutorialApiServer.class);
     public static void main(String... args) throws Exception {
-        int port = Optional.ofNullable(System.getProperty("port")).map(Integer::parseInt).orElse(8443);
+        int port = ofNullable(System.getProperty("port")).map(Integer::parseInt).orElse(8443);
+
+        String mode = ofNullable(System.getProperty("mode")).orElse("dev");
+        String url = format("https://raw.githubusercontent.com/phileagleson/tutorialapi/main/system-dev.properties", mode);
+
+        Config config = ConfigFactory.parseURL(new URL(url));
+        String keystore = config.getString("server.keystore.file");
+        LOGGER.info("Keystore: {}", keystore);
 
         HttpConfiguration httpsConfiguration = new HttpConfiguration();
         httpsConfiguration.setSecureScheme(HTTPS.asString());
@@ -36,7 +47,7 @@ public class TutorialApiServer {
 	HttpConnectionFactory httpsConnectionFactory = new HttpConnectionFactory(httpsConfiguration);
 
 	SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-	sslContextFactory.setKeyStorePath("/Users/phil/Source/tutorialapi/tutorialapi-server/src/main/resources/certs/tutorialapi.p12");
+	sslContextFactory.setKeyStorePath(keystore);
 	sslContextFactory.setKeyStoreType("PKCS12");
 	sslContextFactory.setKeyStorePassword("changeit");
 	sslContextFactory.setKeyManagerPassword("changeit");
