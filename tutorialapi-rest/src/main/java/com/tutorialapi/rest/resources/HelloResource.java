@@ -7,10 +7,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
 @Path("/test")
-public class TestResource {
-        @GET
-        @Produces(TEXT_PLAIN)
-        public String text() {
-                return "Hello from test";
-        }
+public class HelloResource {
+
+    @GET
+    @Produces(TEXT_PLAIN)
+    public String text() {
+        return "Hello from test";
+    }
 }
